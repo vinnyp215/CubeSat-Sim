@@ -19,7 +19,7 @@ class CubeSat:
     total_time (float): Total simulation time in seconds.
   """
 
-  def __init__ (self, mass, dimensions, r0, v0, q0, omega0):
+  def __init__ (self, mass, dimensions, r0, v0, q0, omega0, I):
     """
     Initializes the CubeSat with given parameters.
 
@@ -37,5 +37,14 @@ class CubeSat:
     self.v = np.array(v0)  # Velocity vector in meters per second
     self.q = np.array(q0)  # Attitude quaternion
     self.omega = np.array(omega0)  # Angular velocity vector in radians per second
+
+    # Default inertia for a 1U CubeSat (assuming a box shape)
+    if I is None:
+      side_length = 0.1  # meters (approx for 1U)
+      I_diag = (self.mass / 12) * (2 * side_length**2)
+      self.I = np.diag([I_diag, I_diag, I_diag])
+    else:
+      self.I = np.array(I)
+
 
 
