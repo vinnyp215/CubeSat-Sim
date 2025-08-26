@@ -27,3 +27,5 @@ total_time = 3600  # seconds (1 hour)
 # Create Simulator instance
 simulator = Simulator(cubesat, time_step, total_time)
 
+
+
