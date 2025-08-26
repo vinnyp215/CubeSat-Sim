@@ -4,8 +4,8 @@ import scipy as sp
 # File: dynamics
 # This file contains the dynamics equations for the CubeSat simulation.
 
-import constants as const 
-mu_earth = const.mu_earth
+import constants 
+mu_earth = constants.mu_earth
 
 def calculate_gravity(r):
     """
