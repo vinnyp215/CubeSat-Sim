@@ -3,7 +3,7 @@
 
 import numpy as np 
 import scipy as sp
-from dynamics import spacecraft_dynamics
+from dynamics import dynamics
 
 class Simulator:
   """
@@ -43,11 +43,11 @@ class Simulator:
       self.spacecraft.angular_velocity
     ])
 
-    def rhs(t, y):
-      return spacecraft_dynamics(t, y, self.spacecraft)
+    #def rhs(t, y):
+    #  return dynamics(t, y, self.spacecraft)
 
     rk45 = sp.integrate.RK45(
-      rhs,
+      dynamics,
       t0=0,
       y0=y0,
       t_bound=duration,
