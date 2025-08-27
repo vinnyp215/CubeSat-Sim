@@ -36,6 +36,15 @@ class Simulator:
     num_steps = int(duration / self.time_step)
     print(f"Running simulation for {duration} seconds with {num_steps} steps")
 
+    # Initialize results structure
+    self.sim_results = {
+        'time': np.zeros(num_steps),
+        'position': np.zeros((num_steps, 3)),
+        'velocity': np.zeros((num_steps, 3)),
+        'attitude': np.zeros((num_steps, 4)),
+        'angular_velocity': np.zeros((num_steps, 3))
+    }
+
     y0 = np.hstack([
       self.spacecraft.r,
       self.spacecraft.v,
@@ -43,11 +52,11 @@ class Simulator:
       self.spacecraft.w
     ])
 
-    #def rhs(t, y):
-    #  return dynamics(t, y, self.spacecraft)
+    def rhs(t, y):
+      return dynamics(t, y, self.spacecraft)
 
     rk45 = sp.integrate.RK45(
-      dynamics,
+      rhs,
       t0=0,
       y0=y0,
       t_bound=duration,
