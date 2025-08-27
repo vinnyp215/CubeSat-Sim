@@ -41,6 +41,8 @@ def plot_trajectory_3D(sim_results):
   ax.plot_surface(x, y, z, color='b', alpha=0.3)
   plt.show()
 
+  return None
+
 def plot_ground_station_3D(latitude, longitude, altitude):
  """
  Plots the position of the ground station on a 3D Earth
@@ -91,5 +93,9 @@ def plot_attitude(sim_results):
   plt.suptitle('Spacecraft Attitude Over Time')
   plt.show() 
 
-  
+  return None
+
+
+
+
 
