@@ -5,11 +5,12 @@ import numpy as np
 import scipy as sp
 import constants 
 
-def dynamics(t, state, spacecraft):
+def dynamics(t, state):
     """
     Computes the time derivative of the state vector for the CubeSat.
     
     Args:
+        t (float): Current time in seconds.
         state (np.array): Current state vector [x, y, z, vx, vy, vz, q0, q1, q2, q3, wx, wy, wz].
         
     Returns:

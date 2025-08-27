@@ -52,13 +52,9 @@ class Simulator:
       self.spacecraft.w
     ])
 
-    # Define the right-hand side function for the ODE solver
-    def ODE_rhs(t, y):
-      return dynamics(t, y, self.spacecraft)
-
     # Integration over time using Runge-Kutta 45
-    sim_results = sp.solve_ivp(
-      self.ODE_rhs,
+    sim_results = sp.integrate.solve_ivp(
+      dynamics,
       [0, duration],
       y0,
       t_eval = np.linspace(0, duration, num_steps),
@@ -74,6 +70,7 @@ class Simulator:
     self.spacecraft.angular_velocity = sim_results.y[10:13]
 
     print(f"Simulation finished")
+    
     return self.sim_results 
    
 
