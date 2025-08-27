@@ -22,7 +22,7 @@ class Simulator:
     self.total_time = total_time
     self.current_time = 0
 
-def run_simulation(self, duration):
+  def run_simulation(self, duration):
     """
     Runs the simulation for the specified duration.
 
@@ -36,7 +36,7 @@ def run_simulation(self, duration):
     print(f"Running simulation for {duration} seconds with {num_steps} steps")
     
     # Integrate using Runge-Kutta method
-    self.simresults = {
+    self.sim_results = {
         'time': np.zeros(num_steps),
         'position': np.zeros((num_steps, 3)),
         'velocity': np.zeros((num_steps, 3)),
@@ -44,8 +44,6 @@ def run_simulation(self, duration):
         'angular_velocity': np.zeros((num_steps, 3))
     }
 
-    self.sim_results = sp.integrate.rk45(self.spacecraft, self.time_step, num_steps, self.sim_results)
-    
     print(f"Simulation finished")
     return self.sim_results 
    
