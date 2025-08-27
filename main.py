@@ -39,6 +39,11 @@ print("Simulation complete")
 vis.plot_trajectory_3D(sim_results)
 print("Trajectory plotted")
 
+vis.plot_attitude(sim_results)
+print("Attitude plotted")
+
+
+
 
 
 
