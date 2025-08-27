@@ -47,7 +47,7 @@ def quaternion_derivative(q, w):
     
     return dqdt
 
-def dynamics(state):
+def dynamics(t, state, spacecraft):
     """
     Computes the time derivative of the state vector for the CubeSat.
     

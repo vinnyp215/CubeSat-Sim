@@ -52,9 +52,11 @@ class Simulator:
       self.spacecraft.w
     ])
 
+    # Define the right-hand side function for the ODE solver
     def rhs(t, y):
       return dynamics(t, y, self.spacecraft)
 
+    # Integration over time using Runge-Kutta 45
     rk45 = sp.integrate.RK45(
       rhs,
       t0=0,
