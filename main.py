@@ -4,6 +4,7 @@
 
 from satellite import CubeSat
 from simulator import Simulator   
+from visualisation import plot_trajectory
 
 # Define CubeSat parameters
 mass = 1.33  # kg     
@@ -29,6 +30,9 @@ sim_results = simulator.run_simulation(total_time)
 print("Simulation complete")
 
 # Visualisation 
+plot_trajectory(sim_results)
+print("Trajectory plotted")
+
 
 
 
