@@ -5,6 +5,8 @@ import numpy as np
 import scipy as sp
 import constants
 
+from subsystems.ADCS import ADCS
+
 def dynamics(t, state):
     """
     Computes the time derivative of the state vector for the CubeSat.
@@ -22,8 +24,6 @@ def dynamics(t, state):
     v = state[3:6]    # Velocity [vx, vy, vz]
     q = state[6:10]   # Attitude quaternion [q0, q1, q2, q3]
     w = state[10:13]  # Angular velocity [wx, wy, wz]
-
-    I = constants.I  # Inertia matrix
     
     # Translational dynamics (position and velocity)
     drdt = v
@@ -33,12 +33,12 @@ def dynamics(t, state):
     dqdt = quaternion_derivative(q, w)
     
     # Calculate torque from ADCS (if any)
-    rw_torque = dynamics.rw_torque if hasattr(dynamics, 'rw_torque') else np.zeros(3)
-    mt_torque = dynamics.mt_torque if hasattr(dynamics, 'mt_torque') else np.zeros(3)
+    adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])
+    rw_torque, mt_torque = adcs.control_algorithms(q, w)
     total_torque = rw_torque + mt_torque
 
     # Rotational dynamics (Euler's equation)
-    dwdt = np.linalg.inv(I) @ (total_torque - np.cross(w, I @ w))
+    dwdt = np.linalg.inv(constants.I) @ (total_torque - np.cross(w, constants.I @ w))
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)

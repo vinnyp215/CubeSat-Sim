@@ -17,7 +17,7 @@ class ADCS:
     __init__: Initialises the ADCS with given sensors and actuators.
     determine_attitude: Placeholder for attitude determination logic.
     control_algorithms: Determines control torques based on attitude error and available actuators.
-    
+
   """
 
   def __init__(self, sensors, actuators):
@@ -47,7 +47,7 @@ class ADCS:
     Function to determine control torques based on attitude error and available actuators.
     
     Args:
-      q (no.array): Current attitude quaternion.
+      q (np.array): Current attitude quaternion.
       w (np.array): Current angular velocity vector.
     
     Returns:
@@ -60,9 +60,14 @@ class ADCS:
       Kp = 0.1  # Proportional gain
       Kd = 0.05  # Derivative gain  
 
-      attitude_error = q - np.array([1, 0, 0, 0])  # Assuming desired quaternion is [1,0,0,0]
-      rw_torque = -Kp * attitude_error[1:4] - Kd * w
+      q_t = np.array([1, 0, 0, 0]) # Target quaternion
+      q_e = np.array([[q_t[3], q_t[2],-q_t[1], q_t[0]],
+                     [-q_t[2], q_t[3], q_t[0], q_t[1]],
+                      [q_t[1],-q_t[0], q_t[3], q_t[2]],
+                     [-q_t[0],-q_t[1],-q_t[2], q_t[3]]]) * np.conj(q) # Error quaternion
+      rw_torque = (-Kp * q_e) - (Kd * w)
     else:
+      rw_torque = np.zeros(3)
       pass
   
     if 'magnetorquer' in self.actuators:
@@ -73,6 +78,7 @@ class ADCS:
 
       mt_torque = np.cross(mag_moment, B_earth)
     else:
+      mt_torque = np.zeros(3)
       pass
 
     return rw_torque, mt_torque
