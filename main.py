@@ -4,7 +4,10 @@
 
 from satellite import CubeSat
 from simulator import Simulator   
-from visualisation import plot_trajectory
+from ground_station import GroundStation
+
+import simulator as sim
+import visualisation as vis 
 
 # Define CubeSat parameters
 mass = 1.33  # kg     
@@ -22,16 +25,21 @@ cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)
 time_step = 1  # seconds
 total_time = 3600  # seconds (1 hour)
 
+# Create Ground Station instance
+ground_station = GroundStation("GS1", 0.0, 0.0, 0) 
+
 # Create Simulator instance
 simulator = Simulator(cubesat, time_step, total_time)
 
 # Run Simulator
-sim_results = simulator.run_simulation(total_time)
+sim_results = sim.run_simulation(total_time)
 print("Simulation complete")
 
 # Visualisation 
-plot_trajectory(sim_results)
+vis.plot_trajectory_3D(sim_results)
 print("Trajectory plotted")
+
+
 
 
 

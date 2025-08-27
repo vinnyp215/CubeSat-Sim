@@ -5,9 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import constants as const
 
-def plot_trajectory(sim_results):
+def plot_trajectory_3D(sim_results):
   """
-  Plots the trajectory of the spacecraft from the simulation results.
+  Plots the trajectory of the spacecraft in 3D from the simulation results.
   
   Args:
     sim_results: Data structure containing the simulation results.
@@ -16,7 +16,7 @@ def plot_trajectory(sim_results):
     None
   """
 
-  # Unpacked simualation results
+  # Unpacked simulation results
   time = sim_results['time']
   position = sim_results['position']
   velocity = sim_results['velocity']
@@ -40,5 +40,20 @@ def plot_trajectory(sim_results):
   z = const.R_earth * np.outer(np.ones(np.size(u)), np.cos(v))
   ax.plot_surface(x, y, z, color='b', alpha=0.3)
   plt.show()
+
+def plot_ground_station_3D(latitude, longitude, altitude):
+ """
+ Plots the position of the ground station on a 3D Earth
+ 
+ Args:
+   latitude (float): Latitude of the ground station in degrees.
+   longitude (float): Longitude of the ground station in degrees.
+   altitude (float): Altitude of the ground station in meters.
+
+  Returns:
+    None
+ """
+ # Convert latitude and longitude to 
+
 
 
