@@ -1,6 +1,7 @@
 # File: visualisation
 # This file contains functions for the visualisation of simulation results
 
+import numpy as np
 import matplotlib.pyplot as plt
 import constants as const
 
