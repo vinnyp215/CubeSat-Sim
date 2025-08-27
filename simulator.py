@@ -4,7 +4,6 @@
 import numpy as np 
 import scipy as sp
 from dynamics import dynamics
-
 class Simulator:
   """
   Manages the simulation loop and updates state of spacecraft
@@ -45,6 +44,7 @@ class Simulator:
         'angular_velocity': np.zeros((num_steps, 3))
     }
 
+    # Stack state vector
     y0 = np.hstack([
       self.spacecraft.r,
       self.spacecraft.v,
@@ -53,33 +53,25 @@ class Simulator:
     ])
 
     # Define the right-hand side function for the ODE solver
-    def rhs(t, y):
+    def ODE_rhs(t, y):
       return dynamics(t, y, self.spacecraft)
 
     # Integration over time using Runge-Kutta 45
-    rk45 = sp.integrate.RK45(
-      rhs,
-      t0=0,
-      y0=y0,
-      t_bound=duration,
-      max_step=self.time_step
+    sim_results = sp.solve_ivp(
+      self.ODE_rhs,
+      [0, duration],
+      y0,
+      t_eval = np.linspace(0, duration, num_steps),
+      method = 'RK45',
+      rtol = 1e-6,
+      atol = 1e-9
     )
 
-    step = 0
-    while rk45.status == 'running' and step < num_steps:
-      rk45.step()
-      self.sim_results['time'][step] = rk45.t
-      self.sim_results['position'][step] = rk45.y[0:3]
-      self.sim_results['velocity'][step] = rk45.y[3:6]
-      self.sim_results['attitude'][step] = rk45.y[6:10]
-      self.sim_results['angular_velocity'][step] = rk45.y[10:13]
-      step += 1
-
     # Update spacecraft state to last value
-    self.spacecraft.position = rk45.y[0:3]
-    self.spacecraft.velocity = rk45.y[3:6]
-    self.spacecraft.attitude = rk45.y[6:10]
-    self.spacecraft.angular_velocity = rk45.y[10:13]
+    self.spacecraft.position = sim_results.y[0:3]
+    self.spacecraft.velocity = sim_results.y[3:6]
+    self.spacecraft.attitude = sim_results.y[6:10]
+    self.spacecraft.angular_velocity = sim_results.y[10:13]
 
     print(f"Simulation finished")
     return self.sim_results 

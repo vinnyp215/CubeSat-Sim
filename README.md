@@ -14,9 +14,11 @@
   - Power
   - AOCS (Reaction Wheels, Magnetorquer)
   - Solar Panels (Requires calculating sun exposure)
-- Create Ground Station
+ - Create Ground Station
 
 Underlying Theory:
+
+Verification & Validation:
 
 
 

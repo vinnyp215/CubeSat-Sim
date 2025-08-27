@@ -22,7 +22,7 @@ I = None  # Use default inertia
 cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)
 
 # Define simulation parameters
-time_step = 1  # seconds
+time_step = 10  # seconds
 total_time = 3600  # seconds (1 hour)
 
 # Create Ground Station instance
