@@ -4,6 +4,7 @@
 import numpy as np 
 import scipy as sp
 from dynamics import dynamics
+
 class Simulator:
   """
   Manages the simulation loop and updates state of spacecraft
@@ -53,7 +54,7 @@ class Simulator:
     ])
 
     # Integration over time using Runge-Kutta 45
-    sim_results = sp.integrate.solve_ivp(
+    solution = sp.integrate.solve_ivp(
       dynamics,
       [0, duration],
       y0,
@@ -64,14 +65,20 @@ class Simulator:
     )
 
     # Update spacecraft state to last value
-    self.spacecraft.position = sim_results.y[0:3]
-    self.spacecraft.velocity = sim_results.y[3:6]
-    self.spacecraft.attitude = sim_results.y[6:10]
-    self.spacecraft.angular_velocity = sim_results.y[10:13]
+    self.spacecraft.position = solution.y[0:3]
+    self.spacecraft.velocity = solution.y[3:6]
+    self.spacecraft.attitude = solution.y[6:10]
+    self.spacecraft.angular_velocity = solution.y[10:13]
+
+    self.sim_results['time'] = solution.t
+    self.sim_results['position'] = solution.y[0:3, :].T
+    self.sim_results['velocity'] = solution.y[3:6, :].T
+    self.sim_results['attitude'] = solution.y[6:10, :].T
+    self.sim_results['angular_velocity'] = solution.y[10:13, :].T
 
     print(f"Simulation finished")
-    
-    return self.sim_results 
+
+    return self.sim_results
    
 
       
