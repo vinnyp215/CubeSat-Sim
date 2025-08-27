@@ -26,12 +26,11 @@ def plot_trajectory(sim_results):
   # Plotting the trajectory in 3D
   fig = plt.figure()
   ax = fig.add_subplot(111, projection='3d')
-  ax.plot(position[:,0], position[:,1], position[:,2])
+  ax.plot(position[:,0], position[:,1], position[:,2], color='r')
   ax.set_title('Spacecraft Trajectory')
   ax.set_xlabel('X (m)')
   ax.set_ylabel('Y (m)')
   ax.set_zlabel('Z (m)')
-  plt.show()
 
   # Add Earth to plot
   u = np.linspace(0, 2 * np.pi, 100)
