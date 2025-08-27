@@ -1,8 +1,9 @@
-import numpy as np 
-import scipy as sp
-
 # File: simulator
 # This file contains the simulation loop and time integration methods for the CubeSat.
+
+import numpy as np 
+import scipy as sp
+from dynamics import spacecraft_dynamics
 
 class Simulator:
   """
@@ -34,15 +35,40 @@ class Simulator:
     """
     num_steps = int(duration / self.time_step)
     print(f"Running simulation for {duration} seconds with {num_steps} steps")
-    
-    # Integrate using Runge-Kutta method
-    self.sim_results = {
-        'time': np.zeros(num_steps),
-        'position': np.zeros((num_steps, 3)),
-        'velocity': np.zeros((num_steps, 3)),
-        'attitude': np.zeros((num_steps, 4)),
-        'angular_velocity': np.zeros((num_steps, 3))
-    }
+
+    y0 = np.hstack([
+      self.spacecraft.position,
+      self.spacecraft.velocity,
+      self.spacecraft.attitude,
+      self.spacecraft.angular_velocity
+    ])
+
+    def rhs(t, y):
+      return spacecraft_dynamics(t, y, self.spacecraft)
+
+    rk45 = sp.integrate.RK45(
+      rhs,
+      t0=0,
+      y0=y0,
+      t_bound=duration,
+      max_step=self.time_step
+    )
+
+    step = 0
+    while rk45.status == 'running' and step < num_steps:
+      rk45.step()
+      self.sim_results['time'][step] = rk45.t
+      self.sim_results['position'][step] = rk45.y[0:3]
+      self.sim_results['velocity'][step] = rk45.y[3:6]
+      self.sim_results['attitude'][step] = rk45.y[6:10]
+      self.sim_results['angular_velocity'][step] = rk45.y[10:13]
+      step += 1
+
+    # Update spacecraft state to last value
+    self.spacecraft.position = rk45.y[0:3]
+    self.spacecraft.velocity = rk45.y[3:6]
+    self.spacecraft.attitude = rk45.y[6:10]
+    self.spacecraft.angular_velocity = rk45.y[10:13]
 
     print(f"Simulation finished")
     return self.sim_results 
