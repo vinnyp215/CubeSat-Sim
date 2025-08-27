@@ -1,3 +1,6 @@
+# File: satellite
+# This file contains the CubeSat class definition 
+
 import numpy as np
 import scipy as sp
 
@@ -31,7 +34,7 @@ class CubeSat:
       q0 (np.array): Initial attitude quaternion.
       w0 (np.array): Initial angular velocity vector in radians per second.
     """
-    
+
     self.mass = mass  # Mass of the Cube
     self.dimensions = dimensions  # Dimensions (length, width, height) in meters
     self.r = np.array(r0)  # Position vector in meters

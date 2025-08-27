@@ -1,9 +1,8 @@
-import numpy as np 
-import scipy as sp
-
 # File: dynamics
 # This file contains the dynamics equations for the CubeSat simulation.
 
+import numpy as np 
+import scipy as sp
 import constants 
 
 

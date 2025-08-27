@@ -37,10 +37,10 @@ class Simulator:
     print(f"Running simulation for {duration} seconds with {num_steps} steps")
 
     y0 = np.hstack([
-      self.spacecraft.r0,
-      self.spacecraft.v0,
-      self.spacecraft.q0,
-      self.spacecraft.w0
+      self.spacecraft.r,
+      self.spacecraft.v,
+      self.spacecraft.q,
+      self.spacecraft.w
     ])
 
     #def rhs(t, y):

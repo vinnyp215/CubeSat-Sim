@@ -1,7 +1,3 @@
-import numpy as np
-import scipy as sp
-import matplotlib.pyplot as plt 
-
 # File: main 
 # Main entry point for the CubeSat simulation.
 # This file initialises the CubeSat, sets up the simulation parameters, and runs the simulation loop
