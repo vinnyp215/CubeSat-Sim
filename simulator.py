@@ -3,6 +3,7 @@
 
 import numpy as np 
 import scipy as sp
+
 from dynamics import dynamics
 
 class Simulator:

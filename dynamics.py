@@ -3,7 +3,7 @@
 
 import numpy as np 
 import scipy as sp
-import constants 
+import constants
 
 def dynamics(t, state):
     """
@@ -16,11 +16,14 @@ def dynamics(t, state):
     Returns:
         state_derivative (np.array): Time derivative of the state vector.
     """
+
     # Unpack state vector
     r = state[0:3]    # Position [x, y, z]
     v = state[3:6]    # Velocity [vx, vy, vz]
     q = state[6:10]   # Attitude quaternion [q0, q1, q2, q3]
     w = state[10:13]  # Angular velocity [wx, wy, wz]
+
+    I = constants.I  # Inertia matrix
     
     # Translational dynamics (position and velocity)
     drdt = v
@@ -29,8 +32,13 @@ def dynamics(t, state):
     # Calculate quaternion derivative
     dqdt = quaternion_derivative(q, w)
     
-    # Assume no external torques for now (can be expanded later)
-    dwdt = np.zeros(3)
+    # Calculate torque from ADCS (if any)
+    rw_torque = dynamics.rw_torque if hasattr(dynamics, 'rw_torque') else np.zeros(3)
+    mt_torque = dynamics.mt_torque if hasattr(dynamics, 'mt_torque') else np.zeros(3)
+    total_torque = rw_torque + mt_torque
+
+    # Rotational dynamics (Euler's equation)
+    dwdt = np.linalg.inv(I) @ (total_torque - np.cross(w, I @ w))
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)

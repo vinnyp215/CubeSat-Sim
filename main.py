@@ -6,6 +6,7 @@ from satellite import CubeSat
 from simulator import Simulator   
 from ground_station import GroundStation
 
+import constants
 import simulator
 import visualisation
 
@@ -16,14 +17,30 @@ r0 = [7000e3, 0, 0]  # Initial position
 v0 = [0, 7.5e3, 0]  # Initial velocity
 q0 = [1, 0, 0, 0]  # Initial attitude quaternion
 w0 = [0.1, 0.2, 0]  # Initial angular velocity
-I = None  # Use default inertia
+I = constants.I  # Inertia matrix diagonal elements
+
+# Define simulation parameters
+time_step = 1  # seconds
+total_time = 1000  # seconds 
 
 # Create CubeSat instance
 cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)
 
-# Define simulation parameters
-time_step = 10  # seconds
-total_time = 3600  # seconds (1 hour)
+# Create Subsystems instances and attach to CubeSat
+# (Assuming subsystem classes are defined in their respective files)
+from subsystems.ADCS import ADCS
+# from subsystems.Power import Power  
+# from subsystems.Comms import Comms
+# from subsystems.Thermal import Thermal
+# from subsystems.Payload import Payload
+# from subsystems.Propulsion import Propulsion
+
+# Create ADCS instance
+adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])
+cubesat.adcs = adcs
+
+# Create Power instance
+
 
 # Create Ground Station instance
 ground_station = GroundStation("GS1", 0.0, 0.0, 0) 

@@ -2,7 +2,6 @@
 # This file contains the CubeSat class definition 
 
 import numpy as np
-import scipy as sp
 
 class CubeSat: 
   """
@@ -50,14 +49,7 @@ class CubeSat:
     self.v = np.array(v0)  # Velocity vector in meters per second
     self.q = np.array(q0)  # Attitude quaternion
     self.w = np.array(w0)  # Angular velocity vector in radians per second
-
-    # Default inertia for a 1U CubeSat (assuming a box shape)
-    if I is None:
-      side_length = 0.1  # meters (approx for 1U)
-      I_diag = (self.mass / 12) * (2 * side_length**2)
-      self.I = np.diag([I_diag, I_diag, I_diag])
-    else:
-      self.I = np.array(I)
+    self.I = np.diag(I)    # Inertia matrix
 
 
 
