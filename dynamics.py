@@ -58,10 +58,10 @@ def dynamics(t, state, spacecraft):
         state_derivative (np.array): Time derivative of the state vector.
     """
     # Unpack state vector
-    r = state[0:2]    # Position [x, y, z]
-    v = state[3:5]    # Velocity [vx, vy, vz]
-    q = state[6:9]   # Attitude quaternion [q0, q1, q2, q3]
-    w = state[10:12]  # Angular velocity [wx, wy, wz]
+    r = state[0:3]    # Position [x, y, z]
+    v = state[3:6]    # Velocity [vx, vy, vz]
+    q = state[6:10]   # Attitude quaternion [q0, q1, q2, q3]
+    w = state[10:13]  # Angular velocity [wx, wy, wz]
     
     # Translational dynamics (position and velocity)
     drdt = v
@@ -74,11 +74,11 @@ def dynamics(t, state, spacecraft):
     dwdt = np.zeros(3)
     
     # Pack derivatives into a single state derivative vector
-    state_derivative = np.zeros(12)
-    state_derivative[0:2] = drdt    # dr/dt = v
-    state_derivative[3:5] = dvdt    # dv/dt = a
-    state_derivative[6:9] = dqdt   # dq/dt
-    state_derivative[10:12] = dwdt  # dω/dt
+    state_derivative = np.zeros(13)
+    state_derivative[0:3] = drdt    # dr/dt = v
+    state_derivative[3:6] = dvdt    # dv/dt = a
+    state_derivative[6:10] = dqdt   # dq/dt
+    state_derivative[10:13] = dwdt  # dω/dt
     
     return state_derivative
 
