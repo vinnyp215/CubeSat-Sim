@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+import matplotlib.pyplot as plt 
 
 # File: main 
 # Main entry point for the CubeSat simulation.
@@ -26,6 +27,14 @@ total_time = 3600  # seconds (1 hour)
 
 # Create Simulator instance
 simulator = Simulator(cubesat, time_step, total_time)
+
+# Run Simulator
+sim_results = simulator.run_simulation(total_time)
+print("Simulation complete")
+
+# Visualisation 
+
+
 
 
 

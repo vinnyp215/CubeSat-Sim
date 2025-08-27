@@ -1,5 +1,5 @@
 import numpy as np 
-import scipy as sp 
+import scipy as sp
 
 # File: simulator
 # This file contains the simulation loop and time integration methods for the CubeSat.
@@ -28,18 +28,27 @@ def run_simulation(self, duration):
 
     Args:
       duration (float): Duration to run the simulation in seconds.
+
+    Returns: 
+      sim_results: Data structure containing the simulation results. 
     """
     num_steps = int(duration / self.time_step)
-    print (f"Running simulation for {duration} seconds with {num_steps} steps.")
+    print(f"Running simulation for {duration} seconds with {num_steps} steps")
     
-    for step in range(num_steps):
-      self.step()
-      self.current_time += self.time_step
-      if step % 100 == 0:
-        print (f"Step {step}/{num_steps}, Time: {self.current_time:.2f} s, Position: {self.spacecraft.r}, Velocity: {self.spacecraft.v}")
+    # Integrate using Runge-Kutta method
+    self.simresults = {
+        'time': np.zeros(num_steps),
+        'position': np.zeros((num_steps, 3)),
+        'velocity': np.zeros((num_steps, 3)),
+        'attitude': np.zeros((num_steps, 4)),
+        'angular_velocity': np.zeros((num_steps, 3))
+    }
 
-      # Dynamics update
-      
+    self.sim_results = sp.integrate.rk45(self.spacecraft, self.time_step, num_steps, self.sim_results)
+    
+    print(f"Simulation finished")
+    return self.sim_results 
+   
 
       
 
