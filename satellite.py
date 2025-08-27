@@ -16,10 +16,19 @@ class CubeSat:
     velocity (np.array): Velocity vector of the CubeSat in meters per second.
     angular_velocity (np.array): Angular velocity vector of the CubeSat in radians per second.
 
+  Subsystems:
+    adcs (ADCS): Attitude Determination and Control System instance.
+    power (Power): Power subsystem instance.
+    comms (Comms): Communications subsystem instance.
+    thermal (Thermal): Thermal subsystem instance.
+
   Time Properties:
     time (float): Current simulation time in seconds.
     time_step (float): Time step for the simulation in seconds.
     total_time (float): Total simulation time in seconds.
+
+  Methods:
+    __init__: Initializes the CubeSat with given parameters.
   """
 
   def __init__ (self, mass, dimensions, r0, v0, q0, w0, I):

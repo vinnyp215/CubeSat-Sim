@@ -15,7 +15,7 @@ dimensions = (0.1, 0.1, 0.1)  # meters (1U CubeSat)
 r0 = [7000e3, 0, 0]  # Initial position
 v0 = [0, 7.5e3, 0]  # Initial velocity
 q0 = [1, 0, 0, 0]  # Initial attitude quaternion
-w0 = [0, 0, 0]  # Initial angular velocity
+w0 = [0.1, 0.2, 0]  # Initial angular velocity
 I = None  # Use default inertia
 
 # Create CubeSat instance
