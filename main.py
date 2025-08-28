@@ -9,19 +9,25 @@ from ground_station import GroundStation
 import constants
 import simulator
 import visualisation
+import spacecraft_config as sc
 
-# Define CubeSat parameters
-mass = 1.33  # kg     
-dimensions = (0.1, 0.1, 0.1)  # meters (1U CubeSat)
-r0 = [7000e3, 0, 0]  # Initial position
-v0 = [0, 7.5e3, 0]  # Initial velocity
-q0 = [1, 0, 0, 0]  # Initial attitude quaternion
-w0 = [0.1, 0, 0]  # Initial angular velocity
-I = constants.I  # Inertia matrix diagonal elements
+# Import CubeSat Parameters from spacecraft_config.py
+mass = sc.mass  # kg     
+dimensions = sc.dimensions  # meters (1U CubeSat)
+r0 = sc.r0  # Initial position
+v0 = sc.v0  # Initial velocity
+q0 = sc.q0  # Initial attitude quaternion
+w0 = sc.w0  # Initial angular velocity
+I = sc.I  # Inertia matrix diagonal elements
 
 # Define CubeSat functionality
-sensors=['sun_sensor', 'magnetometer']
-actuators=['reaction_wheel', 'magnetorquer']
+
+# ADCS Parameters
+sensors = ['sun_sensor', 'magnetometer']
+actuators = ['reaction_wheel', 'magnetorquer']
+K_mt = sc.K_mt # Magnetorquer control gain factor
+K_p = sc.K_p  # Reaction wheel proportional gain
+K_d = sc.K_d  # Reaction wheel derivative gain
 
 # Define simulation parameters
 time_step = 5  # seconds

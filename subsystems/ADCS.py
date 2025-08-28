@@ -2,11 +2,11 @@
 # This file contains the ADCS (Attitude Determination and Control System) class for the CubeSat simulation.
 
 import numpy as np
-import math 
 
 from helper_functions import quaternion_multiply
 
 from constants import B_earth
+from spacecraft_config import K_mt, K_p, K_d
 
 class ADCS:
   """
@@ -43,9 +43,6 @@ class ADCS:
     # Placeholder for attitude determination logic
 
     return None
-  
-  
-  
     """
     Function to determine control torques based on attitude error and available actuators.
     
@@ -83,8 +80,8 @@ def rw_control(q, w):
     rw_torque (np.array): Torque from reaction wheels
   """
   # Simple PD controller for reaction wheels
-  Kp = 0.1  # Proportional gain
-  Kd = 0.1  # Derivative gain  
+  # K_p = 0.1  # Proportional gain
+  # K_d = 0.1  # Derivative gain  
 
   q_t = np.array([1, 0, 0, 0]) # Target quaternion
 
@@ -92,7 +89,7 @@ def rw_control(q, w):
 
   q_e = quaternion_multiply(q_t, q_inv) # Calculate quaternion error
 
-  rw_torque = (-Kp * np.sign(q_e[0]) * q_e[1:]) - (Kd * w) # Control law
+  rw_torque = (-K_p * np.sign(q_e[0]) * q_e[1:]) - (K_d * w) # Control law
 
   # Enforce maximum torque
   max_rw_torque = 0.001 # Max torque value in both directions
@@ -117,7 +114,7 @@ def mt_control(w):
   """
   # Simple B-dot algorithm
   dBdt = np.cross(B_earth, w)
-  K_mt = 10 # Control gain factor
+  #K_mt = 100 # Control gain factor
   mag_moment = np.dot(-K_mt, dBdt) # Magnetic dipole moment according to B-dot algorithm
 
   # Enforce maximum dipole moment
