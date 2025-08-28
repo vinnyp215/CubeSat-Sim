@@ -5,8 +5,6 @@ import numpy as np
 import scipy as sp
 import constants
 
-from helper_functions import calculate_a_g, quaternion_derivative
-
 from subsystems.ADCS import ADCS
 
 def dynamics(t, state):
@@ -50,3 +48,44 @@ def dynamics(t, state):
     state_derivative[10:13] = dwdt  # dω/dt
     
     return state_derivative
+
+def calculate_a_g(r):
+    """
+    Calculates the central body gravitational force on a body
+    at a given position, neglecting perturbations.
+    
+    Args:
+        r (np.array): Position vector in meters [x, y, z].
+        
+    Returns:
+        np.array: The acceleration vector [ax, ay, az] in m/s^2.
+    """
+    r_mag = np.linalg.norm(r)
+    
+    # Gravitational acceleration (inverse square law)
+    a_g = -constants.mu_earth / r_mag**3 * r
+
+    return a_g
+
+def quaternion_derivative(q, w):
+    """
+    Calculates the time derivative of the attitude quaternion.
+    
+    Args:
+        q (np.array): Attitude quaternion [q0, q1, q2, q3].
+        w (np.array): Angular velocity vector [wx, wy, wz] in rad/s.
+        
+    Returns:
+        dqdt (np.array): Time derivative of the quaternion [dq0/dt, dq1/dt, dq2/dt, dq3/dt].
+    """
+    q0, q1, q2, q3 = q
+    wx, wy, wz = w
+    
+    dqdt = 0.5 * np.array([
+        -q1*wx - q2*wy - q3*wz,
+         q0*wx + q2*wz - q3*wy,
+         q0*wy - q1*wz + q3*wx,
+         q0*wz + q1*wy - q2*wx
+    ])
+    
+    return dqdt
