@@ -4,7 +4,8 @@
 import numpy as np 
 import scipy as sp
 import constants
-import helper_functions as hf
+
+from helper_functions import calculate_a_g, quaternion_derivative
 
 from subsystems.ADCS import ADCS
 
@@ -28,10 +29,10 @@ def dynamics(t, state):
     
     # Translational dynamics (position and velocity)
     drdt = v
-    dvdt = hf.calculate_a_g(r) # Gravitational acceleration
+    dvdt = calculate_a_g(r) # Gravitational acceleration
         
     # Calculate quaternion derivative
-    dqdt = hf.quaternion_derivative(q, w)
+    dqdt = quaternion_derivative(q, w)
     
     # Calculate torque from ADCS (if any)
     adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])

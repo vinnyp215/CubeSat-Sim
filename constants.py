@@ -14,7 +14,7 @@ c = 299792458    # Speed of light in vacuum, m/s
 R_earth = 6371e3  # Earth's radius in meters
 M_earth = 5.972e24  # Earth's mass in kg
 mu_earth = G * M_earth  # Earth's standard gravitational parameter, m^3
-B_earth = 3.12e-5  # Earth's magnetic field strength at surface, Tesla
+B_earth = [3.12e-5, 3.12e-5, 3.12e-5]  # Earth's magnetic field strength at surface, Tesla
 
 # Mathematical Constants
 pi = np.pi  # Pi

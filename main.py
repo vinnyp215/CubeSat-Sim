@@ -20,7 +20,7 @@ w0 = [0.1, 0.2, 0]  # Initial angular velocity
 I = constants.I  # Inertia matrix diagonal elements
 
 # Define simulation parameters
-time_step = 1  # seconds
+time_step = 5  # seconds
 total_time = 1000  # seconds 
 
 # Create CubeSat instance
