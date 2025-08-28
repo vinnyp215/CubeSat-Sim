@@ -5,6 +5,7 @@ import numpy as np
 
 # Spacecraft Constants
 I = np.diag([0.01, 0.01, 0.02])  # Inertia matrix (kg·m²) for a typical CubeSat
+I_inv = np.linalg.inv(I) # Inverse of inertia matrix
 
 # Universal Constants
 G = 6.67430e-11  # Gravitational constant, m^3 kg^-1 s^-2

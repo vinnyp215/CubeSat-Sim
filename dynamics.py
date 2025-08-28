@@ -6,8 +6,7 @@ import scipy as sp
 import constants
 
 from helper_functions import calculate_a_g, quaternion_derivative
-
-from subsystems.ADCS import ADCS
+from subsystems.ADCS import rw_control, mt_control
 
 def dynamics(t, state):
     """
@@ -26,6 +25,9 @@ def dynamics(t, state):
     v = state[3:6]    # Velocity [vx, vy, vz]
     q = state[6:10]   # Attitude quaternion [q0, q1, q2, q3]
     w = state[10:13]  # Angular velocity [wx, wy, wz]
+
+    # Normalize the quaternion to prevent drift
+    q = q / np.linalg.norm(q)
     
     # Translational dynamics (position and velocity)
     drdt = v
@@ -34,15 +36,13 @@ def dynamics(t, state):
     # Calculate quaternion derivative
     dqdt = quaternion_derivative(q, w)
     
-    # Calculate torque from ADCS (if any)
-    adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])
-    rw_torque, mt_torque = adcs.control_algorithms(q, w)
+    # Calculate torque from ADCS (if any)    
+    rw_torque = rw_control(q, w)
+    mt_torque = mt_control(w)
     total_torque = rw_torque + mt_torque
 
     # Rotational dynamics (Euler's equation)
-    dwdt = np.linalg.inv(constants.I) @ (total_torque - np.cross(w, constants.I @ w))
-
-    # dwdt = [0.1, 0.1, 0]  # Placeholder for angular acceleration
+    dwdt = constants.I_inv @ (total_torque - np.cross(w, constants.I @ w))
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)

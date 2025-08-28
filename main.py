@@ -16,8 +16,12 @@ dimensions = (0.1, 0.1, 0.1)  # meters (1U CubeSat)
 r0 = [7000e3, 0, 0]  # Initial position
 v0 = [0, 7.5e3, 0]  # Initial velocity
 q0 = [1, 0, 0, 0]  # Initial attitude quaternion
-w0 = [0.1, 0.2, 0]  # Initial angular velocity
+w0 = [0.1, 0, 0]  # Initial angular velocity
 I = constants.I  # Inertia matrix diagonal elements
+
+# Define CubeSat functionality
+sensors=['sun_sensor', 'magnetometer']
+actuators=['reaction_wheel', 'magnetorquer']
 
 # Define simulation parameters
 time_step = 5  # seconds
@@ -35,7 +39,7 @@ from subsystems.ADCS import ADCS
 # from subsystems.Propulsion import Propulsion
 
 # Create ADCS instance
-adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])
+adcs = ADCS(sensors, actuators)
 cubesat.adcs = adcs
 
 # # Create Power instance
