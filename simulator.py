@@ -61,8 +61,8 @@ class Simulator:
       y0,
       t_eval = np.linspace(0, duration, num_steps),
       method = 'RK45',
-      rtol = 1e-6,
-      atol = 1e-9
+      rtol = 1e-4,
+      atol = 1e-7
     )
 
     # Update spacecraft state to last value
