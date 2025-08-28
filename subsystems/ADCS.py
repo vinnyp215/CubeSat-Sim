@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from helper_functions import quaternion_multiply
+from helper_functions import quaternion_multiply, cross_product
 
 from constants import B_earth
 from spacecraft_config import K_mt, K_p, K_d
@@ -105,7 +105,7 @@ class ADCS:
       mt_torque (np.array): Torque from magnetorquer
     """
     # Simple B-dot algorithm
-    dBdt = np.cross(B_earth, w)
+    dBdt = cross_product(B_earth, w)
 
     mag_moment = -K_mt * dBdt # Magnetic dipole moment according to B-dot algorithm
 
@@ -113,6 +113,6 @@ class ADCS:
     max_mag_moment = 1 # Max dipole moment in both directions
     mag_moment = np.clip(mag_moment, -max_mag_moment, max_mag_moment)
 
-    mt_torque = np.cross(mag_moment, B_earth) 
+    mt_torque = cross_product(mag_moment, B_earth) 
 
     return mt_torque

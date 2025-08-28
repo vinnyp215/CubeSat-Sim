@@ -4,7 +4,7 @@
 import numpy as np 
 # from spacecraft_config import I, I_inv
 
-from helper_functions import calculate_a_g, quaternion_derivative
+from helper_functions import calculate_a_g, quaternion_derivative, cross_product
 # from subsystems.ADCS import rw_control, mt_control
 
 def dynamics(t, state, spacecraft):
@@ -41,7 +41,7 @@ def dynamics(t, state, spacecraft):
     total_torque = rw_torque + mt_torque
 
     # Rotational dynamics (Euler's equation)
-    dwdt = spacecraft.I_inv @ (total_torque - np.cross(w, spacecraft.I @ w))
+    dwdt = spacecraft.I_inv @ (total_torque - cross_product(w, spacecraft.I @ w))
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)
