@@ -40,7 +40,7 @@ def dynamics(t, state):
     # # Rotational dynamics (Euler's equation)
     # dwdt = np.linalg.inv(constants.I) @ (total_torque - np.cross(w, constants.I @ w))
 
-    dwdt = np.zeros(3)  # Placeholder for angular acceleration (no control torques applied)
+    dwdt = [0.1, 0.1, 0]  # Placeholder for angular acceleration
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)
