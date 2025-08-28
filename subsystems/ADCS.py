@@ -2,6 +2,7 @@
 # This file contains the ADCS (Attitude Determination and Control System) class for the CubeSat simulation.
 
 import numpy as np
+import math 
 
 from helper_functions import quaternion_multiply
 
@@ -82,8 +83,8 @@ def rw_control(q, w):
     rw_torque (np.array): Torque from reaction wheels
   """
   # Simple PD controller for reaction wheels
-  Kp = 0.01  # Proportional gain
-  Kd = 0.01  # Derivative gain  
+  Kp = 0.1  # Proportional gain
+  Kd = 0.1  # Derivative gain  
 
   q_t = np.array([1, 0, 0, 0]) # Target quaternion
 
@@ -96,10 +97,11 @@ def rw_control(q, w):
   # Enforce maximum torque
   max_rw_torque = 0.001 # Max torque value in both directions
 
-  if rw_torque > max_rw_torque:
-    rw_torque = max_rw_torque
-  elif rw_torque < -max_rw_torque:
-    rw_torque = -max_rw_torque
+  for i in range(3):
+    if rw_torque[i] > max_rw_torque:
+      rw_torque[i] = max_rw_torque
+    elif rw_torque[i] < -max_rw_torque:
+      rw_torque[i] = -max_rw_torque
  
   return rw_torque
   
@@ -115,16 +117,17 @@ def mt_control(w):
   """
   # Simple B-dot algorithm
   dBdt = np.cross(B_earth, w)
-  K_mt = 1 # Control gain factor
+  K_mt = 10 # Control gain factor
   mag_moment = np.dot(-K_mt, dBdt) # Magnetic dipole moment according to B-dot algorithm
 
   # Enforce maximum dipole moment
   max_mag_moment = 1 # Max dipole moment in both directions
 
-  if mag_moment > max_mag_moment:
-    mag_moment = max_mag_moment
-  elif mag_moment < -max_mag_moment:
-    mag_moment = max_mag_moment
+  for i in range(3):
+    if mag_moment[i] > max_mag_moment:
+      mag_moment[i] = max_mag_moment
+    elif mag_moment[i] < -max_mag_moment:
+      mag_moment[i] = max_mag_moment
 
   mt_torque = np.cross(mag_moment, B_earth) 
 
