@@ -3,6 +3,8 @@
 
 import numpy as np
 
+from helper_functions import quaternion_multiply
+
 from constants import B_earth
 
 class ADCS:

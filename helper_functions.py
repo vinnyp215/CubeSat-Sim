@@ -38,10 +38,10 @@ def quaternion_derivative(q, w):
     wx, wy, wz = w
     
     dqdt = 0.5 * np.array([
-        -q1*wx - q2*wy - q3*wz,
-         q0*wx + q2*wz - q3*wy,
-         q0*wy - q1*wz + q3*wx,
-         q0*wz + q1*wy - q2*wx
+        -wx*q1 - wy*q2 - wz*q3,
+         wx*q0 + wy*q3 - wz*q2,
+        -wx*q3 + wy*q0 + wz*q1,
+         wx*q2 - wy*q1 + wz*q0
     ])
     
     return dqdt
