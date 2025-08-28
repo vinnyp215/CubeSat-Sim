@@ -68,54 +68,51 @@ class ADCS:
 
     return rw_torque, mt_torque
 
-def rw_control(q, w):
-  """
-  Function to determine reaction wheel torque
+  def rw_control(self, q, w):
+    """
+    Function to determine reaction wheel torque
 
-  Args:
-    q (np.array): Current attitude quaternion
-    w (np.array): Current angular velocity vector
+    Args:
+      q (np.array): Current attitude quaternion
+      w (np.array): Current angular velocity vector
 
-  Returns:
-    rw_torque (np.array): Torque from reaction wheels
-  """
-  # Simple PD controller for reaction wheels
-  # K_p = 0.1  # Proportional gain
-  # K_d = 0.1  # Derivative gain  
+    Returns:
+      rw_torque (np.array): Torque from reaction wheels
+    """
+    # Simple PD controller for reaction wheels
+    q_t = np.array([1, 0, 0, 0]) # Target quaternion
 
-  q_t = np.array([1, 0, 0, 0]) # Target quaternion
+    q_inv = np.array([q[0], -q[1], -q[2], -q[3]]) # Inverse of current quaternion
 
-  q_inv = np.array([q[0], -q[1], -q[2], -q[3]]) # Inverse of current quaternion
+    q_e = quaternion_multiply(q_t, q_inv) # Calculate quaternion error
 
-  q_e = quaternion_multiply(q_t, q_inv) # Calculate quaternion error
+    rw_torque = (-K_p * np.sign(q_e[0]) * q_e[1:]) - (K_d * w) # Control law
 
-  rw_torque = (-K_p * np.sign(q_e[0]) * q_e[1:]) - (K_d * w) # Control law
-
-  # Enforce maximum torque
-  max_rw_torque = 0.001 # Max torque value in both directions
-  rw_torque = np.clip(rw_torque, -max_rw_torque, max_rw_torque)
- 
-  return rw_torque
+    # Enforce maximum torque
+    max_rw_torque = 0.001 # Max torque value in both directions
+    rw_torque = np.clip(rw_torque, -max_rw_torque, max_rw_torque)
   
-def mt_control(w):
-  """
-  Function to determine magnetorque torque
+    return rw_torque
+    
+  def mt_control(self, w):
+    """
+    Function to determine magnetorque torque
 
-  Args:
-    w (np.array): Current angular velocity vector
+    Args:
+      w (np.array): Current angular velocity vector
 
-  Returns:
-    mt_torque (np.array): Torque from magnetorquer
-  """
-  # Simple B-dot algorithm
-  dBdt = np.cross(B_earth, w)
+    Returns:
+      mt_torque (np.array): Torque from magnetorquer
+    """
+    # Simple B-dot algorithm
+    dBdt = np.cross(B_earth, w)
 
-  mag_moment = -K_mt * dBdt # Magnetic dipole moment according to B-dot algorithm
+    mag_moment = -K_mt * dBdt # Magnetic dipole moment according to B-dot algorithm
 
-   # Enforce maximum dipole moment
-  max_mag_moment = 1 # Max dipole moment in both directions
-  mag_moment = np.clip(mag_moment, -max_mag_moment, max_mag_moment)
+    # Enforce maximum dipole moment
+    max_mag_moment = 1 # Max dipole moment in both directions
+    mag_moment = np.clip(mag_moment, -max_mag_moment, max_mag_moment)
 
-  mt_torque = np.cross(mag_moment, B_earth) 
+    mt_torque = np.cross(mag_moment, B_earth) 
 
-  return mt_torque
+    return mt_torque

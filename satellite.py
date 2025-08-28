@@ -30,7 +30,7 @@ class CubeSat:
     __init__: Initializes the CubeSat with given parameters.
   """
 
-  def __init__ (self, mass, dimensions, r0, v0, q0, w0, I):
+  def __init__ (self, mass, dimensions, r0, v0, q0, w0, I, I_inv):
     """
     Initializes the CubeSat with given parameters.
 
@@ -49,7 +49,7 @@ class CubeSat:
     self.v = np.array(v0)  # Velocity vector in meters per second
     self.q = np.array(q0)  # Attitude quaternion
     self.w = np.array(w0)  # Angular velocity vector in radians per second
-    self.I = np.diag(I)    # Inertia matrix
-
+    self.I = I   # Inertia matrix
+    self.I_inv = I_inv # Inverse of inertia matrix
 
 

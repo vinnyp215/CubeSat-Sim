@@ -19,6 +19,7 @@ v0 = sc.v0  # Initial velocity
 q0 = sc.q0  # Initial attitude quaternion
 w0 = sc.w0  # Initial angular velocity
 I = sc.I  # Inertia matrix diagonal elements
+I_inv = sc.I_inv # Inverse of inertia matrix
 
 # Define CubeSat functionality
 
@@ -37,7 +38,7 @@ time_step = 10  # seconds
 total_time = 3600  # seconds 
 
 # Create CubeSat instance
-cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)
+cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I, I_inv)
 
 # Create Subsystems instances and attach to CubeSat
 from subsystems.ADCS import ADCS

@@ -2,12 +2,12 @@
 # This file contains the dynamics equations for the CubeSat simulation.
 
 import numpy as np 
-from spacecraft_config import I, I_inv
+# from spacecraft_config import I, I_inv
 
 from helper_functions import calculate_a_g, quaternion_derivative
-from subsystems.ADCS import rw_control, mt_control
+# from subsystems.ADCS import rw_control, mt_control
 
-def dynamics(t, state):
+def dynamics(t, state, spacecraft):
     """
     Computes the time derivative of the state vector for the CubeSat.
     
@@ -36,12 +36,12 @@ def dynamics(t, state):
     dqdt = quaternion_derivative(q, w)
     
     # Calculate torque from ADCS (if any)    
-    rw_torque = rw_control(q, w)
-    mt_torque = mt_control(w)
+    rw_torque = spacecraft.adcs.rw_control(q, w)
+    mt_torque = spacecraft.adcs.mt_control(w)
     total_torque = rw_torque + mt_torque
 
     # Rotational dynamics (Euler's equation)
-    dwdt = I_inv @ (total_torque - np.cross(w, I @ w))
+    dwdt = spacecraft.I_inv @ (total_torque - np.cross(w, spacecraft.I @ w))
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)
