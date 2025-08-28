@@ -29,7 +29,7 @@ cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)
 # Create Subsystems instances and attach to CubeSat
 # (Assuming subsystem classes are defined in their respective files)
 from subsystems.ADCS import ADCS
-# from subsystems.Power import Power  
+from subsystems.power import Power  
 # from subsystems.Comms import Comms
 # from subsystems.Thermal import Thermal
 # from subsystems.Payload import Payload
