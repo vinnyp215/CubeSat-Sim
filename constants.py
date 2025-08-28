@@ -12,6 +12,7 @@ R_earth = 6371e3  # Earth's radius in meters
 M_earth = 5.972e24  # Earth's mass in kg
 mu_earth = G * M_earth  # Earth's standard gravitational parameter, m^3
 B_earth = [3.12e-5, 3.12e-5, 3.12e-5]  # Earth's magnetic field strength at surface, Tesla
+solar_constant = 1361 # Solar constant, W/m^2
 
 # Mathematical Constants
 pi = np.pi  # Pi

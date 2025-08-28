@@ -22,3 +22,8 @@ K_mt = 100 # Magnetorquer control gain factor
 K_p = 0.1  # Reaction wheel proportional gain
 K_d = 0.1  # Reaction wheel derivative gain
 
+# --- Power ---
+battery_capacity=10
+solar_panel_area=0.01
+solar_panel_efficiency=0.3
+

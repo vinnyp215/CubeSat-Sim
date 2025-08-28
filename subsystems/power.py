@@ -2,6 +2,7 @@
 # This file contains the Power subsystem class for the simulation
 
 import numpy as np
+import constants
 
 class Power:
   """
@@ -51,7 +52,7 @@ class Power:
       power_generated (float): Power generated in Watts.
     """
 
-    solar_constant = 1361  # Solar constant in W/m² at Earth's distance
+    solar_constant = constants.solar_constant
     power_generated = self.solar_panel_area * self.solar_panel_efficiency * solar_constant * sunlight_exposure
 
     return power_generated
