@@ -29,9 +29,12 @@ K_mt = sc.K_mt # Magnetorquer control gain factor
 K_p = sc.K_p  # Reaction wheel proportional gain
 K_d = sc.K_d  # Reaction wheel derivative gain
 
+# Power System Parameters
+
+
 # Define simulation parameters
-time_step = 5  # seconds
-total_time = 1000  # seconds 
+time_step = 10  # seconds
+total_time = 3600  # seconds 
 
 # Create CubeSat instance
 cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)

@@ -93,12 +93,7 @@ def rw_control(q, w):
 
   # Enforce maximum torque
   max_rw_torque = 0.001 # Max torque value in both directions
-
-  for i in range(3):
-    if rw_torque[i] > max_rw_torque:
-      rw_torque[i] = max_rw_torque
-    elif rw_torque[i] < -max_rw_torque:
-      rw_torque[i] = -max_rw_torque
+  rw_torque = np.clip(rw_torque, -max_rw_torque, max_rw_torque)
  
   return rw_torque
   
@@ -114,17 +109,12 @@ def mt_control(w):
   """
   # Simple B-dot algorithm
   dBdt = np.cross(B_earth, w)
-  #K_mt = 100 # Control gain factor
-  mag_moment = np.dot(-K_mt, dBdt) # Magnetic dipole moment according to B-dot algorithm
 
-  # Enforce maximum dipole moment
+  mag_moment = -K_mt * dBdt # Magnetic dipole moment according to B-dot algorithm
+
+   # Enforce maximum dipole moment
   max_mag_moment = 1 # Max dipole moment in both directions
-
-  for i in range(3):
-    if mag_moment[i] > max_mag_moment:
-      mag_moment[i] = max_mag_moment
-    elif mag_moment[i] < -max_mag_moment:
-      mag_moment[i] = max_mag_moment
+  mag_moment = np.clip(mag_moment, -max_mag_moment, max_mag_moment)
 
   mt_torque = np.cross(mag_moment, B_earth) 
 
