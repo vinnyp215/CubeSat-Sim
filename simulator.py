@@ -60,7 +60,7 @@ class Simulator:
       [0, duration],
       y0,
       t_eval = np.linspace(0, duration, num_steps),
-      method = 'RK45',
+      method = 'LSODA',
       rtol = 1e-4,
       atol = 1e-7
     )

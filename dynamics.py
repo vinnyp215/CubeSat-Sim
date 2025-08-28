@@ -34,15 +34,15 @@ def dynamics(t, state):
     # Calculate quaternion derivative
     dqdt = quaternion_derivative(q, w)
     
-    # # Calculate torque from ADCS (if any)
-    # adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])
-    # rw_torque, mt_torque = adcs.control_algorithms(q, w)
-    # total_torque = rw_torque + mt_torque
+    # Calculate torque from ADCS (if any)
+    adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel', 'magnetorquer'])
+    rw_torque, mt_torque = adcs.control_algorithms(q, w)
+    total_torque = rw_torque + mt_torque
 
-    # # Rotational dynamics (Euler's equation)
-    # dwdt = np.linalg.inv(constants.I) @ (total_torque - np.cross(w, constants.I @ w))
+    # Rotational dynamics (Euler's equation)
+    dwdt = np.linalg.inv(constants.I) @ (total_torque - np.cross(w, constants.I @ w))
 
-    dwdt = [0.1, 0.1, 0]  # Placeholder for angular acceleration
+    # dwdt = [0.1, 0.1, 0]  # Placeholder for angular acceleration
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)
