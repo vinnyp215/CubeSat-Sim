@@ -27,7 +27,6 @@ total_time = 1000  # seconds
 cubesat = CubeSat(mass, dimensions, r0, v0, q0, w0, I)
 
 # Create Subsystems instances and attach to CubeSat
-# (Assuming subsystem classes are defined in their respective files)
 from subsystems.ADCS import ADCS
 from subsystems.power import Power  
 # from subsystems.Comms import Comms
@@ -40,7 +39,8 @@ adcs = ADCS(sensors=['sun_sensor', 'magnetometer'], actuators=['reaction_wheel',
 cubesat.adcs = adcs
 
 # Create Power instance
-
+power = Power(battery_capacity=10, solar_panel_area=0.01, solar_panel_efficiency=0.3)
+cubesat.power = power
 
 # Create Ground Station instance
 ground_station = GroundStation("GS1", 0.0, 0.0, 0) 

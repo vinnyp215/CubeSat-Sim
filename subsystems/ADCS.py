@@ -2,6 +2,7 @@
 # This file contains the ADCS (Attitude Determination and Control System) class for the CubeSat simulation.
 
 import numpy as np
+from helper_functions import quaternion_multiply
 
 from constants import B_earth
 
@@ -61,11 +62,12 @@ class ADCS:
       Kd = 0.05  # Derivative gain  
 
       q_t = np.array([1, 0, 0, 0]) # Target quaternion
-      q_e = np.array([[q_t[3], q_t[2],-q_t[1], q_t[0]],
-                     [-q_t[2], q_t[3], q_t[0], q_t[1]],
-                      [q_t[1],-q_t[0], q_t[3], q_t[2]],
-                     [-q_t[0],-q_t[1],-q_t[2], q_t[3]]]) * np.conj(q) # Error quaternion
-      rw_torque = (-Kp * q_e) - (Kd * w)
+
+      q_inv = np.array([q[0], -q[1], -q[2], -q[3]]) # Inverse of current quaternion
+
+      q_e = quaternion_multiply(q_t, q_inv) # Calculate quaternion error
+
+      rw_torque = (-Kp * np.sign(q_e[0]) * q_e[1:]) - (Kd * w) # Control law
     else:
       rw_torque = np.zeros(3)
       pass
