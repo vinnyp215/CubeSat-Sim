@@ -32,16 +32,15 @@ def dynamics(t, state, spacecraft):
     drdt = v
     dvdt = calculate_a_g(r) # Gravitational acceleration
         
-    # Calculate quaternion derivative
-    dqdt = quaternion_derivative(q, w)
+    # Rotational dynamics (attitude and angular velocity)
+    dqdt = quaternion_derivative(q, w) # Calculate quaternion derivative
     
     # Calculate torque from ADCS (if any)    
     rw_torque = spacecraft.adcs.rw_control(q, w)
     mt_torque = spacecraft.adcs.mt_control(w)
     total_torque = rw_torque + mt_torque
 
-    # Rotational dynamics (Euler's equation)
-    dwdt = spacecraft.I_inv @ (total_torque - cross_product(w, spacecraft.I @ w))
+    dwdt = spacecraft.I_inv @ (total_torque - cross_product(w, spacecraft.I @ w)) # Euler's equation
     
     # Pack derivatives into a single state derivative vector
     state_derivative = np.zeros(13)

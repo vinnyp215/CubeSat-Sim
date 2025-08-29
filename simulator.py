@@ -54,7 +54,7 @@ class Simulator:
       self.spacecraft.w
     ])
 
-    # Integration over time using Runge-Kutta 45
+    # Integration over time
     solution = sp.integrate.solve_ivp(
       lambda t, y: dynamics(t, y, self.spacecraft), # Pass spacecraft object
       [0, duration],
